@@ -9,7 +9,6 @@ import {
   Camera, 
   CheckCircle, 
   Image as ImageIcon,
-  Gift,
   History,
   Sparkles,
   ChevronRight
@@ -19,34 +18,29 @@ export default function WasteCreditBank() {
   const [currentView, setCurrentView] = useState('welcome');
   const [userId, setUserId] = useState('');
 
-  // --- BUG FIX: Strict Input Handler ---
-  // Prevents negatives, decimals, and caps the number at 160 instantly.
-  const handleStrictNumberInput = (e, setter) => {
-    let val = e.target.value.replace(/[^0-9]/g, ''); // Strip non-numbers
+  // Added 'any' types to pass Vercel strict mode
+  const handleStrictNumberInput = (e: any, setter: any) => {
+    let val = e.target.value.replace(/[^0-9]/g, '');
     if (val === '') {
       setter('');
       return;
     }
     const num = parseInt(val, 10);
     if (num > 160) {
-      setter('160'); // Cap at 160
+      setter('160');
     } else {
       setter(num.toString());
     }
   };
 
-  // --- 1. Welcome Screen (Upgraded UI) ---
   const WelcomeView = () => (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900">
-      
-      {/* Glowing Logo */}
       <div className="relative flex items-center justify-center w-24 h-24 mb-8">
         <div className="absolute inset-0 bg-emerald-500 rounded-full blur-xl opacity-40 animate-pulse"></div>
         <div className="relative flex items-center justify-center w-full h-full bg-gradient-to-tr from-emerald-400 to-teal-300 rounded-3xl shadow-2xl transform rotate-3">
           <Leaf className="w-12 h-12 text-slate-900" />
         </div>
       </div>
-      
       <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-100 mb-3 text-center tracking-tight">
         Waste Credit Bank
       </h1>
@@ -82,13 +76,12 @@ export default function WasteCreditBank() {
     </div>
   );
 
-  // --- 2. Login Screen (Upgraded UI) ---
   const LoginView = () => {
     const [idInput, setIdInput] = useState('');
     const [passInput, setPassInput] = useState('');
     const [error, setError] = useState('');
 
-    const handleLogin = (e) => {
+    const handleLogin = (e: any) => {
       e.preventDefault();
       const numId = parseInt(idInput, 10);
       
@@ -150,25 +143,19 @@ export default function WasteCreditBank() {
     );
   };
 
-  // --- 3. Resident Waste Wallet (Upgraded UI) ---
   const ResidentView = () => {
     const [showPhoto, setShowPhoto] = useState(false);
 
     return (
       <div className="flex flex-col min-h-screen bg-slate-100 pb-8">
-        
-        {/* Dynamic Gradient Header */}
         <div className="bg-gradient-to-br from-emerald-600 via-teal-500 to-emerald-800 rounded-b-[2.5rem] px-6 pt-12 pb-10 shadow-lg shadow-emerald-500/20 text-white relative overflow-hidden">
-          {/* Background decoration */}
           <div className="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
-          
           <div className="flex justify-between items-center mb-8 relative z-10">
             <h2 className="text-xl font-medium tracking-wide">Welcome, Flat <span className="font-bold text-2xl">{userId}</span></h2>
             <button onClick={() => setCurrentView('welcome')} className="p-2.5 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/20 transition-colors">
               <LogOut className="w-5 h-5" />
             </button>
           </div>
-          
           <div className="relative z-10">
             <p className="text-sm font-medium opacity-80 mb-2 uppercase tracking-wider">Current Balance</p>
             <div className="flex items-baseline space-x-2">
@@ -179,8 +166,6 @@ export default function WasteCreditBank() {
         </div>
 
         <div className="px-5 -mt-6 space-y-5 relative z-20">
-          
-          {/* Reward Status Card */}
           <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-50">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center text-emerald-600 font-bold bg-emerald-50 px-3 py-1.5 rounded-lg text-sm">
@@ -195,7 +180,6 @@ export default function WasteCreditBank() {
             <p className="text-sm text-slate-500 text-right mt-3 font-semibold">60 points away!</p>
           </div>
 
-          {/* Feedback Alert Card */}
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/60 p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <div className="flex items-start">
               <div className="bg-amber-100 p-2 rounded-xl mr-4 flex-shrink-0 shadow-sm">
@@ -221,7 +205,6 @@ export default function WasteCreditBank() {
             </div>
           </div>
 
-          {/* Transaction History */}
           <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-50">
             <div className="flex items-center text-slate-800 font-extrabold text-lg mb-5">
               <History className="w-5 h-5 mr-3 text-emerald-500" /> Transaction History
@@ -231,7 +214,7 @@ export default function WasteCreditBank() {
                 { bin: 'Wet', status: 'Perfectly Sorted', pts: '+10', date: 'Today, 8:00 AM' },
                 { bin: 'Plastic', status: 'Perfectly Sorted', pts: '+10', date: 'Today, 8:00 AM' },
                 { bin: 'Dry', status: 'Mixed Issue Logged', pts: '-15', date: 'Yesterday, 8:15 AM' },
-              ].map((tx, idx) => (
+              ].map((tx: any, idx: number) => (
                 <div key={idx} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
                   <div>
                     <p className="font-bold text-slate-800">{tx.bin} Bin</p>
@@ -249,14 +232,13 @@ export default function WasteCreditBank() {
     );
   };
 
-  // --- 4. Housekeeping Logger (Upgraded UI) ---
   const StaffView = () => {
     const [selectedFlat, setSelectedFlat] = useState('');
-    const [status, setStatus] = useState({ Wet: null, Dry: null, Plastic: null });
+    // Added 'any' typing here to pass strict indexing rules
+    const [status, setStatus] = useState<any>({ Wet: null, Dry: null, Plastic: null });
 
     return (
       <div className="flex flex-col min-h-screen bg-slate-100 pb-24">
-        {/* Staff Header */}
         <div className="bg-slate-900 text-white px-6 pt-12 pb-6 shadow-xl flex justify-between items-center sticky top-0 z-30">
           <div className="flex items-center">
             <div className="bg-orange-500/20 p-2 rounded-lg mr-3">
@@ -270,7 +252,6 @@ export default function WasteCreditBank() {
         </div>
 
         <div className="p-5 space-y-6">
-          {/* Strict Flat Selector */}
           <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
             <label className="block text-sm font-black text-slate-400 mb-3 uppercase tracking-widest text-center">Select Flat (1-160)</label>
             <input 
@@ -282,7 +263,6 @@ export default function WasteCreditBank() {
             />
           </div>
 
-          {/* Rating Interface - Tactile Buttons */}
           <div className="space-y-5">
             {['Wet', 'Dry', 'Plastic'].map((bin) => (
               <div key={bin} className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
@@ -312,7 +292,6 @@ export default function WasteCreditBank() {
           </div>
         </div>
 
-        {/* Floating Action Bar */}
         <div className="fixed bottom-0 left-0 right-0 p-5 bg-white border-t border-slate-200 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] z-40 space-y-3 max-w-md mx-auto">
             <button className="w-full flex items-center justify-center p-4 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-2xl font-black text-lg active:scale-95 transition-all border border-indigo-100">
               <Camera className="w-6 h-6 mr-3" /> Attach Photo Proof
@@ -328,7 +307,6 @@ export default function WasteCreditBank() {
     );
   };
 
-  // --- MAIN RENDERER ---
   return (
     <div className="max-w-md mx-auto min-h-screen bg-slate-900 shadow-2xl relative overflow-x-hidden font-sans">
       {currentView === 'welcome' && <WelcomeView />}
